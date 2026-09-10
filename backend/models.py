@@ -1,6 +1,10 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Float, JSON, DateTime
-from backend.database import Base
+
+try:
+    from backend.database import Base
+except ImportError:
+    from database import Base
 
 
 class CertificateRecord(Base):

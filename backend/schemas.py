@@ -1,7 +1,11 @@
 from datetime import datetime
 from typing import Dict, List, Literal, Optional, Any
 from pydantic import BaseModel, Field, ConfigDict, model_validator
-from backend.shapley_engine import DOMAINS
+
+try:
+    from backend.shapley_engine import DOMAINS
+except ImportError:
+    from shapley_engine import DOMAINS
 
 
 class ScoreRequest(BaseModel):

@@ -1,9 +1,19 @@
 import os
+import sys
 import re
 import urllib.parse
+from pathlib import Path
 from datetime import datetime, timezone
 from typing import Dict, Any, List
 from contextlib import asynccontextmanager
+
+# Add parent directory and current directory to sys.path for robust import resolution
+current_dir = Path(__file__).resolve().parent
+parent_dir = current_dir.parent
+if str(current_dir) not in sys.path:
+    sys.path.insert(0, str(current_dir))
+if str(parent_dir) not in sys.path:
+    sys.path.insert(0, str(parent_dir))
 
 import httpx
 from fastapi import FastAPI, Depends, HTTPException, status
@@ -12,18 +22,32 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from dotenv import load_dotenv
 
-from backend.database import get_db, init_db
-from backend.models import CertificateRecord
-from backend.schemas import (
-    ScoreRequest,
-    ScoreResponse,
-    TranslateRequest,
-    TranslateResponse,
-    CertificateCreateRequest,
-    CertificatePublic
-)
-from backend.shapley_engine import DOMAINS, score_domain_inputs, compute_cert_hash
-from backend.auth import require_api_key
+try:
+    from backend.database import get_db, init_db
+    from backend.models import CertificateRecord
+    from backend.schemas import (
+        ScoreRequest,
+        ScoreResponse,
+        TranslateRequest,
+        TranslateResponse,
+        CertificateCreateRequest,
+        CertificatePublic
+    )
+    from backend.shapley_engine import DOMAINS, score_domain_inputs, compute_cert_hash
+    from backend.auth import require_api_key
+except ImportError:
+    from database import get_db, init_db
+    from models import CertificateRecord
+    from schemas import (
+        ScoreRequest,
+        ScoreResponse,
+        TranslateRequest,
+        TranslateResponse,
+        CertificateCreateRequest,
+        CertificatePublic
+    )
+    from shapley_engine import DOMAINS, score_domain_inputs, compute_cert_hash
+    from auth import require_api_key
 
 load_dotenv()
 
