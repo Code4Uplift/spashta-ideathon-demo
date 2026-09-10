@@ -1,3 +1,5 @@
+const SPASHTA_API_URL = window.SPASHTA_API_URL || 'http://localhost:8000';
+
 class InstantTranslateService {
   constructor() {
     this.cache = new Map();
@@ -59,6 +61,28 @@ class InstantTranslateService {
     const clean = textChunk.trim();
     if (!clean) return textChunk;
 
+    // 1. Primary: Server-side FastAPI Translation Proxy
+    try {
+      const resp = await fetch(`${SPASHTA_API_URL}/translate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: clean,
+          source_lang: sourceLang,
+          target_lang: targetLang
+        })
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data && data.translated_text) {
+          return data.translated_text;
+        }
+      }
+    } catch (apiErr) {
+      console.warn('FastAPI translate proxy unreachable, falling back to direct browser translation:', apiErr);
+    }
+
+    // 2. Client-side Fallback: Google GTX Single API
     try {
       const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(clean)}`;
       const response = await fetch(url);
@@ -75,6 +99,7 @@ class InstantTranslateService {
       console.warn('Google Translate Single API error, trying MyMemory fallback:', e);
     }
 
+    // 3. Fallback: MyMemory API
     try {
       const url2 = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(clean)}&langpair=${sourceLang}|${targetLang}`;
       const response2 = await fetch(url2);

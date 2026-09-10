@@ -1,0 +1,132 @@
+from datetime import datetime
+from typing import Dict, List, Literal, Optional, Any
+from pydantic import BaseModel, Field, ConfigDict, model_validator
+from backend.shapley_engine import DOMAINS
+
+
+class ScoreRequest(BaseModel):
+    domain: Literal["rbi", "irdai", "sebi"]
+    inputs: Dict[str, float] = Field(default_factory=dict)
+
+    @model_validator(mode="after")
+    def validate_inputs_for_domain(self):
+        domain_cfg = DOMAINS.get(self.domain)
+        if not domain_cfg:
+            raise ValueError(f"Unknown domain: {self.domain}")
+
+        for field in domain_cfg["fields"]:
+            key = field["key"]
+            if key in self.inputs:
+                val = float(self.inputs[key])
+                if field.get("type") == "range":
+                    min_val = field.get("min", float("-inf"))
+                    max_val = field.get("max", float("inf"))
+                    if val < min_val or val > max_val:
+                        raise ValueError(
+                            f"Field '{key}' value {val} out of range [{min_val}, {max_val}] for domain '{self.domain}'"
+                        )
+                elif "allowed_values" in field:
+                    allowed = field["allowed_values"]
+                    if not any(abs(val - a) < 1e-6 for a in allowed):
+                        raise ValueError(
+                            f"Field '{key}' value {val} is not in allowed choices {allowed} for domain '{self.domain}'"
+                        )
+            else:
+                self.inputs[key] = field["base"]
+
+        return self
+
+
+class FactorAttribution(BaseModel):
+    key: str
+    name: str
+    attribution: float
+    value: float
+    baseline: float
+    coef: float
+
+
+class ScoreResponse(BaseModel):
+    domain: str
+    full_prob: float
+    baseline_prob: float
+    score_pct: int
+    baseline_pct: int
+    verdict: str
+    decided: bool
+    shap_values: List[float]
+    factor_breakdown: List[FactorAttribution]
+    citation: str
+    cert_prefix: str
+
+
+class TranslateRequest(BaseModel):
+    text: str
+    source_lang: str = "en"
+    target_lang: str = "hi"
+
+
+class TranslateResponse(BaseModel):
+    translated_text: str
+    source_lang: str
+    target_lang: str
+    cached: bool = False
+
+
+class CertificateCreateRequest(BaseModel):
+    domain: Literal["rbi", "irdai", "sebi"]
+    inputs: Dict[str, float] = Field(default_factory=dict)
+
+    @model_validator(mode="after")
+    def validate_certificate_inputs(self):
+        domain_cfg = DOMAINS.get(self.domain)
+        if not domain_cfg:
+            raise ValueError(f"Unknown domain: {self.domain}")
+
+        for field in domain_cfg["fields"]:
+            key = field["key"]
+            if key in self.inputs:
+                val = float(self.inputs[key])
+                if field.get("type") == "range":
+                    min_val = field.get("min", float("-inf"))
+                    max_val = field.get("max", float("inf"))
+                    if val < min_val or val > max_val:
+                        raise ValueError(
+                            f"Field '{key}' value {val} out of range [{min_val}, {max_val}] for domain '{self.domain}'"
+                        )
+                elif "allowed_values" in field:
+                    allowed = field["allowed_values"]
+                    if not any(abs(val - a) < 1e-6 for a in allowed):
+                        raise ValueError(
+                            f"Field '{key}' value {val} is not in allowed choices {allowed} for domain '{self.domain}'"
+                        )
+            else:
+                self.inputs[key] = field["base"]
+
+        return self
+
+
+class CertificatePublic(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    cert_id: str
+    domain: str
+    verdict: str
+    sha256_hash: str
+    created_at: datetime
+
+
+class CertificateInternal(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    cert_id: str
+    domain: str
+    inputs: Dict[str, Any]
+    coefficients: Optional[Any] = None
+    shap_values: List[float]
+    baseline_prob: float
+    full_prob: float
+    verdict: str
+    sha256_hash: str
+    created_at: datetime

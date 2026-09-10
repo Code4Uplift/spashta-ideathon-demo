@@ -1,6 +1,7 @@
 # SPASHTA (स्पष्ट) — Multilingual Explainable AI Platform
 
-> **Audit-Ready, Citizen-Centric Explainable AI (XAI) for Regulated Financial Sectors (RBI, IRDAI, SEBI)**
+> **Audit-Ready, Citizen-Centric Explainable AI (XAI) for Regulated Financial Sectors (RBI, IRDAI, SEBI)**  
+> Full-Stack Architecture: Static Frontend (Vercel) + FastAPI Backend (Render) + PostgreSQL Audit Registry (Supabase).
 
 ---
 
@@ -11,77 +12,117 @@
 * **IRDAI** (Health & Motor Insurance Claim Adjudication)
 * **SEBI** (Retail Investor Investment Suitability Advisory)
 
-By combining **Shapley Value Marginal Attribution Math** with real-time translation across **22 official Eighth Schedule Indian languages**, SPASHTA translates complex algorithmic outputs into plain-language advisory narratives, visual attribution charts, and audio stream readouts.
+By combining **Aumann-Shapley Marginal Attribution Math** with real-time translation across **22 official Eighth Schedule Indian languages**, SPASHTA translates complex algorithmic outputs into plain-language advisory narratives, visual attribution charts, tamper-evident audit records, and audio stream readouts.
 
 ---
 
-## 🌟 Key Features & Prototype Capabilities
-
-- **🧮 Aumann-Shapley Attribution Engine**: Exact closed-form Aumann-Shapley marginal contribution math ($\phi_i$) — the continuous-game generalization of Shapley values (Aumann & Shapley, 1974) that underlies Integrated Gradients attribution — satisfying the efficiency axiom ($\sum_i \phi_i = f(x) - f(\text{baseline})$) for every financial input parameter.
-- **🌐 22 Indian Languages Translation**: Dynamic real-time translation supporting Hindi, Marathi, Tamil, Telugu, Bengali, Gujarati, Kannada, Malayalam, Punjabi, Urdu, Farsi, and more.
-- **🔊 Natural Voice Audio Stream**: Integrated Audio Advisory Toolbar with **Play**, **Pause**, **Resume**, and **Stop** controls.
-- **📄 Regulatory Audit Certificates**: Tamper-evident XAI certificates (SHA-256 hash fingerprint over every decision input) featuring confidence scores, factor weight balance charts, and legal citations.
-- **🎯 Interactive Vision & Roadmap Popup**: Built-in modal overlay detailing phased future production enhancements.
-
----
-
-## 🧮 Explainability Methodology
-
-The attribution engine (`js/shapley-engine.js`) computes per-feature contributions using a closed-form **Aumann-Shapley value** — the rigorous continuous-player extension of the classic (finite-player) Shapley value, and the same axiomatic basis as the "Integrated Gradients" method (Sundararajan, Taly & Yan, 2017). For this platform's linear/logistic scoring models, the integral has an exact analytic solution (the secant slope of the sigmoid between the baseline and the applicant's actual inputs), so no sampling or approximation is required.
-
-This guarantees the **efficiency axiom** that any audit-ready explanation must satisfy:
+## 🏗️ System Architecture
 
 ```
-sum(phi_i for all features i) == P(outcome | applicant inputs) − P(outcome | baseline inputs)
+                               ┌────────────────────────┐
+                               │  Vercel Static Hosting │
+                               │  (frontend/)           │
+                               └───────────┬────────────┘
+                                           │ HTTPS / JSON
+                                           ▼
+                               ┌────────────────────────┐
+                               │  Render Web Service    │
+                               │  (FastAPI Backend)     │
+                               └───┬────────────────┬───┘
+                                   │                │
+            ┌──────────────────────┴──────┐         │ NMT Proxy (gtx/MyMemory)
+            ▼                             ▼         ▼
+┌────────────────────────┐   ┌──────────────────────────┐
+│  Aumann-Shapley Engine │   │  Supabase PostgreSQL DB  │
+│  Exact Closed-Form XAI │   │  Tamper-Evident Registry │
+└────────────────────────┘   └──────────────────────────┘
 ```
 
-In plain terms: the individual factor attributions shown to the applicant always add up exactly to the actual change in their approval probability — nothing is double-counted or left unexplained.
-
-### Where the scoring weights come from
-
-- **RBI (Credit)** — coefficients are calibrated against publicly documented Indian lending norms: CIBIL score bands (650–749 "good", 750+ "excellent") and the FOIR range most banks/NBFCs treat as acceptable (roughly ≤50%, up to 50–55% at the outer edge). Sources checked August 2026: HDFC Bank, Axis Bank, Paisabazaar, BankBazaar published FOIR guidance; TransUnion CIBIL score-band guidance. This is **not** an official RBI-published formula — none exists publicly; RBI's Master Direction and Fair Lending Code mandate the explainability *process*, not specific scoring weights.
-- **IRDAI (Claims)** and **SEBI (Suitability)** — IRDAI and SEBI likewise do not publish numeric scoring formulas; both mandate fair process and (for SEBI) that product risk match investor risk profile (Regulation 16). The coefficients here operationalize those *principles* (non-disclosure of a pre-existing condition weighs heavily, product risk should track investor risk tolerance) for demo purposes — they are illustrative, not sourced from an official published scorecard.
-
-A production deployment would need each regulated entity's own board-approved underwriting/claims/suitability policy substituted in here — this demo's weights exist to prove the explainability and attribution *mechanism* works correctly, not to represent any real institution's actual credit or suitability policy.
-
----
-
-## 🎯 Phased Project Roadmap & Ideology
-
-### 🟢 Phase 1: Near-Term Enhancements (Easy to Implement)
-* **Voice-to-Text Input (Speech-to-Text)**: Citizen voice input allowing rural applicants to dictate profile parameters directly in regional dialects.
-* **QR-Verified PDF Compliance Certificates**: Cryptographically signed audit certificates with scannable QR codes for instant verification at bank branches.
-
-### 🟡 Phase 2: Core Platform Integrations (Moderate Complexity)
-* **Live Bhasini Regional Voice Synthesis (TTS)**: Direct MeitY Bhasini Text-to-Speech (TTS) pipelines for natural spoken explanations across all 22 official Indian languages.
-* **Direct Core Banking (CBS) & Account Aggregator Integrations**: Direct API webhooks into Finacle, TCS BaNCS, and Account Aggregator frameworks for automated underwriting audit.
-
-### 🔴 Phase 3: Long-Term Enterprise Scalability (Advanced Vision)
-* **Multi-Agency Regulatory Expansion**: Extending XAI explainability models to PFRDA (Pensions), IBBI (Insolvency), and NABARD (Cooperative Credit).
-* **Federated Privacy-Preserving XAI Engine**: On-device explainable model execution keeping sensitive citizen financial & health data private under DPDP Act 2023.
+### Free-Tier Production Stack
+| Layer | Service | Purpose |
+|---|---|---|
+| **Frontend** | **Vercel** | Static hosting with auto-HTTPS (`frontend/` root) |
+| **Backend** | **Render** | FastAPI Web Service (`backend/` root) |
+| **Database** | **Supabase** | PostgreSQL audit ledger storing decision inputs & SHA-256 fingerprints |
+| **Translation** | **FastAPI Proxy** | Server-side translation proxy with in-memory caching |
+| **CI/CD** | **GitHub Actions** | Automated pytest validation suite on PRs and pushes |
 
 ---
 
-## 🛠️ Regulatory Compliance Alignments
+## 🌟 Key Features & Capabilities
 
-- **RBI**: Master Direction on Credit Card Issuance (2022) & Fair Lending Code 2023.
-- **IRDAI**: Protection of Policyholders Interests Regulations 2024.
-- **SEBI**: Investment Advisers Regulations (2020 Amendment).
+- **🧮 Aumann-Shapley Attribution Engine**: Exact closed-form Aumann-Shapley marginal contribution math ($\phi_i$) satisfying the efficiency axiom ($\sum_i \phi_i = f(x) - f(\text{baseline})$) for every input parameter.
+- **🌐 22 Indian Languages Translation**: Server-side proxied NMT translation supporting Hindi, Marathi, Tamil, Telugu, Bengali, Gujarati, Kannada, Malayalam, Punjabi, Urdu, Farsi, and more.
+- **🛡️ Registry-Backed Audit Certificates**: Full audit trail committed to PostgreSQL with SHA-256 digests. Scoped public verification via `/verify/{cert_id}` ensuring **zero PII leakage** under DPDP Act 2023.
+- **🔊 Natural Voice Audio Stream**: Integrated Audio Advisory Toolbar with Play, Pause, Resume, and Stop controls.
+- **🔒 Scoped API Key Authentication**: Protected write and scoring endpoints (`/score`, `/certificate`) guarded via `X-API-Key`.
+
+---
+
+## 🔌 API Reference (`backend/`)
+
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| `GET` | `/health` | Public | Health check & DB ping (used for Render keep-alive pinger) |
+| `POST` | `/score` | Protected (`X-API-Key`) | Computes Aumann-Shapley marginal attributions ($\phi_i$) and verdict |
+| `POST` | `/translate` | Public | Proxies text translation with server-side in-memory caching |
+| `POST` | `/certificate` | Protected (`X-API-Key`) | Computes SHA-256 fingerprint, persists record in DB, returns cert ID |
+| `GET` | `/verify/{cert_id}` | Public | Verifies certificate in DB returning strictly scoped public fields (No PII) |
 
 ---
 
 ## 🚀 How to Run Locally
 
-Since SPASHTA is built as a zero-dependency static web application, you can run it directly:
+### 1. Clone the repository
+```bash
+git clone https://github.com/Code4Uplift/spashta-ideathon-demo.git
+cd spashta-ideathon-demo
+```
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Code4Uplift/spashta-ideathon-demo.git
-   cd spashta-ideathon-demo
-   ```
-2. Open `index.html` directly in your browser:
-   * Double-click `index.html`, OR
-   * Serve via any static web server (e.g. VS Code Live Server or `python -m http.server 8080`).
+### 2. Set up and Run the FastAPI Backend
+```bash
+# Install dependencies
+pip install -r backend/requirements.txt
+
+# Run pytest test suite
+pytest backend/tests -v
+
+# Start backend server (defaults to local SQLite database)
+uvicorn backend.main:app --reload --port 8000
+```
+Backend will be live at `http://localhost:8000` (Swagger docs at `http://localhost:8000/docs`).
+
+### 3. Serve the Frontend
+```bash
+# In a separate terminal:
+cd frontend
+python -m http.server 3000
+```
+Open `http://localhost:3000` in your web browser.
+
+---
+
+## 🚢 Deployment Guide
+
+### A. Database (Supabase)
+1. Create a new free project on [Supabase](https://supabase.com).
+2. Copy your PostgreSQL connection string (`DATABASE_URL`).
+
+### B. Backend (Render)
+1. Connect your GitHub repository on [Render](https://render.com).
+2. Create a **New Web Service** with:
+   - Root Directory: `backend/`
+   - Build Command: `pip install -r backend/requirements.txt`
+   - Start Command: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
+3. Add Environment Variables:
+   - `DATABASE_URL`: Your Supabase PostgreSQL connection string.
+   - `API_KEY`: A shared secret key (e.g., `spashta-secret-key-2026`).
+   - `ALLOWED_ORIGINS`: `https://spashta.vercel.app,http://localhost:3000`
+
+### C. Frontend (Vercel)
+1. Import repository on [Vercel](https://vercel.com).
+2. Set **Root Directory** to `frontend/`.
+3. Deploy! Update `frontend/js/config.js` with your Render backend URL.
 
 ---
 

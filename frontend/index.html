@@ -19,7 +19,7 @@
       <h3 style="margin:0; font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; color:var(--primary-navy);">Multilingual NMT Translation Engine</h3>
     </div>
     <p style="font-size:13px; color:var(--text-dark); line-height:1.6; margin:0 0 16px;">
-      Currently translating across <b>12 primary languages</b> using public free translation keys (2-3s response latency). Full 22+ Eighth Schedule Indian regional language instant pipeline via MeitY Bhasini will activate upon production key approval.
+      Currently translating across <b>12 primary languages</b> using FastAPI server-side proxy with in-memory caching. Full 22+ Eighth Schedule Indian regional language instant pipeline via MeitY Bhasini will activate upon production key approval.
     </p>
     <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
       <span style="font-size:11px; color:var(--text-muted); font-weight:600;" id="lang-modal-timer">Auto-closing in 5s...</span>
@@ -30,6 +30,22 @@
   </div>
 </div>
 
+<div class="modal-overlay hidden" id="verify-modal">
+  <div class="lang-modal-card" style="max-width: 520px;">
+    <button type="button" class="modal-close-btn" id="verify-modal-close-btn">&times;</button>
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+      <span style="font-size:24px;">🛡️</span>
+      <h3 style="margin:0; font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; color:var(--primary-navy);">Registry Audit Verification</h3>
+    </div>
+    <div id="verify-modal-body" style="font-size:13px; color:var(--text-dark); line-height:1.6; margin:0 0 16px;">
+      <p>Querying PostgreSQL audit registry...</p>
+    </div>
+    <button type="button" class="modal-action-btn" id="verify-modal-ok-btn" style="padding:10px; font-size:13px;">
+      Close Verification Window
+    </button>
+  </div>
+</div>
+
 <div class="modal-overlay" id="roadmap-modal">
   <div class="modal-card">
     <button type="button" class="modal-close-btn" id="modal-close-btn">&times;</button>
@@ -37,7 +53,7 @@
     <div class="modal-header">
       <span class="modal-badge">🎯 Project Vision & Roadmap</span>
       <h2 class="modal-title">SPASHTA (स्पष्ट) — Ideology & Future Scope</h2>
-      <p class="modal-desc">This working prototype demonstrates core Explainable AI math & real-time translation. Below is our phased roadmap of planned features for future production updates.</p>
+      <p class="modal-desc">This working prototype demonstrates core Explainable AI math & real-time translation backed by a live FastAPI audit backend. Below is our phased roadmap of planned features for future production updates.</p>
     </div>
 
     <div class="roadmap-list">
@@ -167,11 +183,12 @@
 
 <footer class="site">
   <div class="shell">
-    <p class="note">Powered by <b>Shapley Marginal Attribution Engine</b> & <b>Digital India Bhasini ULCA Pipeline</b>. Compliant with RBI Fair Lending 2023, IRDAI Policyholder Protection 2024 & SEBI Advisers Regulations 2020.</p>
+    <p class="note">Powered by <b>Shapley Marginal Attribution Engine</b> & <b>FastAPI Audit Backend</b>. Compliant with RBI Fair Lending 2023, IRDAI Policyholder Protection 2024 & SEBI Advisers Regulations 2020.</p>
     <span>SPASHTA Platform · Multilingual Explainable AI Demo</span>
   </div>
 </footer>
 
+<script src="js/config.js"></script>
 <script src="js/translate-service.js"></script>
 <script src="js/shapley-engine.js"></script>
 <script src="js/domain-data.js"></script>
