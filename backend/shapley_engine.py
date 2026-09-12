@@ -195,6 +195,147 @@ DOMAINS: Dict[str, Dict[str, Any]] = {
                 "allowed_values": [1.0, 3.0, 5.0]
             }
         ]
+    },
+    "pfrda": {
+        "key": "pfrda",
+        "name": "PFRDA",
+        "fullName": "Pension Fund Regulatory and Development Authority",
+        "certPrefix": "PFRDA/XAI-PENSION",
+        "intercept": -0.45,
+        "intro": "Evaluates citizen retirement pension suitability and National Pension System (NPS) asset allocation under <b>PFRDA (Retirement Adviser) Regulations 2016</b>.",
+        "citation": "Regulation 14 (Suitability of Pension Schemes & Life-Cycle Fund Allocation) & PFRDA Master Circular 2023.",
+        "decisionWord": {
+            "pos": "PENSION PLAN SUITABLE",
+            "neg": "CORPUS INADEQUATE / UNSUITABLE"
+        },
+        "decisionVerb": "pension scheme and annuity suitability assessment",
+        "fields": [
+            {
+                "key": "age",
+                "label": "Current Investor Age",
+                "flabel": "Investor Age",
+                "min": 18.0, "max": 70.0, "step": 1.0, "base": 35.0, "coef": -0.04, "type": "range"
+            },
+            {
+                "key": "monthly_contribution",
+                "label": "Monthly NPS Contribution (₹)",
+                "flabel": "Monthly NPS Savings",
+                "min": 1000.0, "max": 100000.0, "step": 1000.0, "base": 10000.0, "coef": 0.00004, "type": "range"
+            },
+            {
+                "key": "equity_allocation",
+                "label": "Active Equity Allocation (E-Class %)",
+                "flabel": "Equity Exposure",
+                "min": 5.0, "max": 75.0, "step": 5.0, "base": 40.0, "coef": 0.025, "type": "range"
+            },
+            {
+                "key": "pension_target",
+                "label": "Desired Monthly Pension Target (₹)",
+                "flabel": "Target Monthly Pension",
+                "min": 10000.0, "max": 200000.0, "step": 5000.0, "base": 45000.0, "coef": -0.00002, "type": "range"
+            },
+            {
+                "key": "corpus_index",
+                "label": "Retirement Corpus Adequacy Score",
+                "flabel": "Corpus Adequacy Ratio",
+                "min": 10.0, "max": 100.0, "step": 5.0, "base": 50.0, "coef": 0.035, "type": "range"
+            }
+        ]
+    },
+    "ibbi": {
+        "key": "ibbi",
+        "name": "IBBI",
+        "fullName": "Insolvency and Bankruptcy Board of India",
+        "certPrefix": "IBBI/XAI-CIRP",
+        "intercept": -0.20,
+        "intro": "Evaluates Corporate Insolvency Resolution Process (CIRP) resolution plan feasibility and liquidation viability under <b>Insolvency and Bankruptcy Code 2016</b>.",
+        "citation": "Section 30(2) & Section 31 (Feasibility and Viability of Resolution Plan) & IBBI CIRP Regulations 2024.",
+        "decisionWord": {
+            "pos": "RESOLUTION PLAN VIABLE",
+            "neg": "LIQUIDATION RISK / REJECTED"
+        },
+        "decisionVerb": "insolvency resolution plan evaluation",
+        "fields": [
+            {
+                "key": "ev_amount",
+                "label": "Resolution Enterprise Value (₹ Cr)",
+                "flabel": "Offered Resolution Value",
+                "min": 10.0, "max": 1000.0, "step": 10.0, "base": 150.0, "coef": 0.004, "type": "range"
+            },
+            {
+                "key": "liquidation_coverage",
+                "label": "Liquidation Value Coverage (%)",
+                "flabel": "Liquidation Coverage Ratio",
+                "min": 50.0, "max": 200.0, "step": 5.0, "base": 110.0, "coef": 0.015, "type": "range"
+            },
+            {
+                "key": "timeline_months",
+                "label": "Implementation Horizon (Months)",
+                "flabel": "Resolution Timeline",
+                "min": 3.0, "max": 36.0, "step": 1.0, "base": 12.0, "coef": -0.06, "type": "range"
+            },
+            {
+                "key": "op_creditor_recovery",
+                "label": "Operational Creditor Recovery (%)",
+                "flabel": "Operational Creditor Share",
+                "min": 10.0, "max": 100.0, "step": 5.0, "base": 40.0, "coef": 0.02, "type": "range"
+            },
+            {
+                "key": "promoter_track",
+                "label": "Applicant Governance / Track Record",
+                "flabel": "Resolution Applicant Track Record",
+                "base": 1.0, "coef": 0.45, "type": "select",
+                "allowed_values": [3.0, 1.0, -1.0]
+            }
+        ]
+    },
+    "nabard": {
+        "key": "nabard",
+        "name": "NABARD",
+        "fullName": "National Bank for Agriculture & Rural Development",
+        "certPrefix": "NABARD/XAI-AGRI",
+        "intercept": -0.85,
+        "intro": "Evaluates smallholder farmer Kisan Credit Card (KCC) limit and agricultural crop loan viability under <b>NABARD Master Guidelines on Kisan Credit Card</b>.",
+        "citation": "NABARD KCC Operational Guidelines & RBI Master Direction on Priority Sector Lending (Agriculture).",
+        "decisionWord": {
+            "pos": "KCC CROP LOAN APPROVED",
+            "neg": "AGRI CREDIT REJECTED / HIGH RISK"
+        },
+        "decisionVerb": "agricultural credit and Kisan Credit Card underwriting",
+        "fields": [
+            {
+                "key": "land_holding",
+                "label": "Cultivable Land Holding (Acres)",
+                "flabel": "Cultivable Land Size",
+                "min": 0.5, "max": 25.0, "step": 0.5, "base": 3.5, "coef": 0.18, "type": "range"
+            },
+            {
+                "key": "crop_value",
+                "label": "Annual Harvest Market Value (₹)",
+                "flabel": "Annual Harvest Yield",
+                "min": 50000.0, "max": 1500000.0, "step": 25000.0, "base": 300000.0, "coef": 0.0000035, "type": "range"
+            },
+            {
+                "key": "informal_debt",
+                "label": "Informal Moneylender Debt Share (%)",
+                "flabel": "Non-Institutional Debt Ratio",
+                "min": 0.0, "max": 80.0, "step": 5.0, "base": 20.0, "coef": -0.04, "type": "range"
+            },
+            {
+                "key": "irrigation_status",
+                "label": "Perennial Irrigation Source Access",
+                "flabel": "Irrigation Reliability",
+                "base": 1.0, "coef": 0.85, "type": "toggle",
+                "allowed_values": [0.0, 1.0]
+            },
+            {
+                "key": "crop_insurance",
+                "label": "PM-Fasal Bima Yojana (PMFBY) Insured",
+                "flabel": "PMFBY Crop Insurance Coverage",
+                "base": 1.0, "coef": 1.15, "type": "toggle",
+                "allowed_values": [0.0, 1.0]
+            }
+        ]
     }
 }
 

@@ -26,6 +26,7 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
+          cache-dependency-path: 'backend/requirements.txt'
 
       - name: Install Dependencies
         run: |
@@ -34,7 +35,8 @@ jobs:
 
       - name: Run Pytest Suite
         run: |
-          pytest backend/tests -v
+          python -m pytest backend/tests -v
         env:
-          API_KEY: test-secret-key-2026
-          DATABASE_URL: sqlite:///:memory:
+          PYTHONPATH: .
+          API_KEY: "test-secret-key-2026"
+          DATABASE_URL: "sqlite:///:memory:"

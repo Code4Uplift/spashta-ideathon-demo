@@ -116,3 +116,56 @@ def test_score_irdai_and_sebi(client, auth_headers):
     data_sebi = resp_sebi.json()
     assert data_sebi["verdict"] == "PRODUCT SUITABLE"
     assert abs(sum(data_sebi["shap_values"]) - (data_sebi["full_prob"] - data_sebi["baseline_prob"])) < 1e-6
+
+
+def test_score_pfrda_ibbi_nabard(client, auth_headers):
+    # PFRDA (Pensions)
+    pfrda_payload = {
+        "domain": "pfrda",
+        "inputs": {
+            "age": 28,
+            "monthly_contribution": 25000,
+            "equity_allocation": 60,
+            "pension_target": 40000,
+            "corpus_index": 85
+        }
+    }
+    resp_pfrda = client.post("/score", json=pfrda_payload, headers=auth_headers)
+    assert resp_pfrda.status_code == 200
+    data_pfrda = resp_pfrda.json()
+    assert data_pfrda["verdict"] == "PENSION PLAN SUITABLE"
+    assert abs(sum(data_pfrda["shap_values"]) - (data_pfrda["full_prob"] - data_pfrda["baseline_prob"])) < 1e-6
+
+    # IBBI (Insolvency Resolution)
+    ibbi_payload = {
+        "domain": "ibbi",
+        "inputs": {
+            "ev_amount": 350,
+            "liquidation_coverage": 140,
+            "timeline_months": 9,
+            "op_creditor_recovery": 65,
+            "promoter_track": 3.0
+        }
+    }
+    resp_ibbi = client.post("/score", json=ibbi_payload, headers=auth_headers)
+    assert resp_ibbi.status_code == 200
+    data_ibbi = resp_ibbi.json()
+    assert data_ibbi["verdict"] == "RESOLUTION PLAN VIABLE"
+    assert abs(sum(data_ibbi["shap_values"]) - (data_ibbi["full_prob"] - data_ibbi["baseline_prob"])) < 1e-6
+
+    # NABARD (Kisan Agricultural Credit)
+    nabard_payload = {
+        "domain": "nabard",
+        "inputs": {
+            "land_holding": 8.5,
+            "crop_value": 750000,
+            "informal_debt": 5,
+            "irrigation_status": 1,
+            "crop_insurance": 1
+        }
+    }
+    resp_nabard = client.post("/score", json=nabard_payload, headers=auth_headers)
+    assert resp_nabard.status_code == 200
+    data_nabard = resp_nabard.json()
+    assert data_nabard["verdict"] == "KCC CROP LOAN APPROVED"
+    assert abs(sum(data_nabard["shap_values"]) - (data_nabard["full_prob"] - data_nabard["baseline_prob"])) < 1e-6

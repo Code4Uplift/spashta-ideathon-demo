@@ -7,9 +7,11 @@ try:
 except ImportError:
     from shapley_engine import DOMAINS
 
+DomainType = Literal["rbi", "irdai", "sebi", "pfrda", "ibbi", "nabard"]
+
 
 class ScoreRequest(BaseModel):
-    domain: Literal["rbi", "irdai", "sebi"]
+    domain: DomainType
     inputs: Dict[str, float] = Field(default_factory=dict)
 
     @model_validator(mode="after")
@@ -78,7 +80,7 @@ class TranslateResponse(BaseModel):
 
 
 class CertificateCreateRequest(BaseModel):
-    domain: Literal["rbi", "irdai", "sebi"]
+    domain: DomainType
     inputs: Dict[str, float] = Field(default_factory=dict)
 
     @model_validator(mode="after")
@@ -134,3 +136,18 @@ class CertificateInternal(BaseModel):
     verdict: str
     sha256_hash: str
     created_at: datetime
+
+
+class AccountAggregatorWebhookPayload(BaseModel):
+    consent_handle: str = "AA-CONSENT-2026-SPASHTA"
+    fip_id: str = "FIP-HDFC-BANK-CBS"
+    financial_data: Dict[str, Any]
+    domain: DomainType = "rbi"
+
+
+class AccountAggregatorResponse(BaseModel):
+    status: str
+    consent_handle: str
+    extracted_parameters: Dict[str, float]
+    score_result: ScoreResponse
+    verified_at: datetime

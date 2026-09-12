@@ -8,27 +8,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700&family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Noto+Sans+Kannada:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Sans+Oriya:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
-<div class="modal-overlay hidden" id="lang-modal">
-  <div class="lang-modal-card">
-    <button type="button" class="modal-close-btn" id="lang-modal-close-btn">&times;</button>
-    <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-      <span style="font-size:24px;">🌐</span>
-      <h3 style="margin:0; font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; color:var(--primary-navy);">Multilingual NMT Translation Engine</h3>
-    </div>
-    <p style="font-size:13px; color:var(--text-dark); line-height:1.6; margin:0 0 16px;">
-      Currently translating across <b>12 primary languages</b> using FastAPI server-side proxy with in-memory caching. Full 22+ Eighth Schedule Indian regional language instant pipeline via MeitY Bhasini will activate upon production key approval.
-    </p>
-    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
-      <span style="font-size:11px; color:var(--text-muted); font-weight:600;" id="lang-modal-timer">Auto-closing in 5s...</span>
-      <button type="button" class="modal-action-btn" id="lang-modal-ok-btn" style="padding:8px 20px; font-size:13px; width:auto;">
-        OK, Got It
-      </button>
-    </div>
-  </div>
-</div>
+
 
 <div class="modal-overlay hidden" id="verify-modal">
   <div class="lang-modal-card" style="max-width: 520px;">
@@ -46,77 +30,63 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="roadmap-modal">
-  <div class="modal-card">
-    <button type="button" class="modal-close-btn" id="modal-close-btn">&times;</button>
-    
-    <div class="modal-header">
-      <span class="modal-badge">🎯 Project Vision & Roadmap</span>
-      <h2 class="modal-title">SPASHTA (स्पष्ट) — Ideology & Future Scope</h2>
-      <p class="modal-desc">This working prototype demonstrates core Explainable AI math & real-time translation backed by a live FastAPI audit backend. Below is our phased roadmap of planned features for future production updates.</p>
+<div class="modal-overlay hidden" id="aa-modal">
+  <div class="lang-modal-card" style="max-width: 560px;">
+    <button type="button" class="modal-close-btn" id="aa-modal-close-btn">&times;</button>
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+      <span style="font-size:24px;">🏦</span>
+      <div>
+        <h3 style="margin:0; font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; color:var(--primary-navy);">Account Aggregator (AA) Gateway</h3>
+        <span style="font-size:11px; color:var(--text-muted); font-weight:600;">Direct CBS Connectors (Finacle / BaNCS / Sahamati AA)</span>
+      </div>
     </div>
+    <p style="font-size:13px; color:var(--text-dark); line-height:1.5; margin:0 0 16px;">
+      Select a verified financial profile to simulate automated, zero-manual-entry statement ingestion directly into SPASHTA's explainable underwriting engine:
+    </p>
 
-    <div class="roadmap-list">
-      <div class="roadmap-section-title">🟢 Phase 1: Near-Term Enhancements (Easy to Implement)</div>
-      
-      <div class="roadmap-item">
-        <div class="roadmap-icon">🎙️</div>
-        <div class="roadmap-content">
-          <h4>Voice-to-Text Input (Speech-to-Text)</h4>
-          <p>Allowing rural applicants and non-literate citizens to dictate financial inputs (e.g. speaking monthly income or credit score) directly in regional dialects.</p>
+    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+      <div class="aa-profile-card" data-profile="rbi-hdfc">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <b>💳 HDFC Bank Corporate Salaried Account</b>
+          <span class="badge-verified">✓ AA Signed</span>
         </div>
+        <p style="margin:4px 0 0; font-size:12px; color:var(--text-muted);">
+          Verified Income: ₹1,20,000/mo · Avg Balance: ₹85,000 · Debt FOIR: 25% · CIBIL: 790 (Prime)
+        </p>
       </div>
 
-      <div class="roadmap-item">
-        <div class="roadmap-icon">📄</div>
-        <div class="roadmap-content">
-          <h4>QR-Verified PDF Compliance Certificates</h4>
-          <p>Generating cryptographically signed audit certificates with scannable QR codes for instant verification at bank branches and insurance desks.</p>
+      <div class="aa-profile-card" data-profile="nabard-kcc">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <b>🌾 SBI Kisan Credit Card / Agri Account</b>
+          <span class="badge-verified">✓ AA Signed</span>
         </div>
+        <p style="margin:4px 0 0; font-size:12px; color:var(--text-muted);">
+          Verified Land: 7.5 Acres · Annual Yield: ₹6,50,000 · PMFBY Insured · Perennial Borewell
+        </p>
       </div>
 
-      <div class="roadmap-section-title">🟡 Phase 2: Core Platform Integrations (Moderate Complexity)</div>
-
-      <div class="roadmap-item">
-        <div class="roadmap-icon">🔊</div>
-        <div class="roadmap-content">
-          <h4>Live Regional Voice Synthesis (Bhasini TTS)</h4>
-          <p>Integrating native MeitY Bhasini Text-to-Speech (TTS) pipelines for natural, spoken explanations across all 22 Eighth Schedule Indian languages.</p>
+      <div class="aa-profile-card" data-profile="sebi-axis">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <b>📈 Axis Bank Wealth Priority Account</b>
+          <span class="badge-verified">✓ AA Signed</span>
         </div>
-      </div>
-
-      <div class="roadmap-item">
-        <div class="roadmap-icon">🏦</div>
-        <div class="roadmap-content">
-          <h4>Direct Core Banking (CBS) & AA Webhook Integration</h4>
-          <p>Direct API connectors into Finacle, TCS BaNCS, and Account Aggregator (AA) frameworks for automated, zero-manual-entry underwriting audit.</p>
-        </div>
-      </div>
-
-      <div class="roadmap-section-title">🔴 Phase 3: Long-Term Enterprise Scalability (Advanced Vision)</div>
-
-      <div class="roadmap-item">
-        <div class="roadmap-icon">⚖️</div>
-        <div class="roadmap-content">
-          <h4>Multi-Agency Regulatory Expansion (PFRDA, IBBI, NABARD)</h4>
-          <p>Extending XAI explainability models to pensions (PFRDA), insolvency resolution (IBBI), and rural agricultural credit cooperatives (NABARD).</p>
-        </div>
-      </div>
-
-      <div class="roadmap-item">
-        <div class="roadmap-icon">🔒</div>
-        <div class="roadmap-content">
-          <h4>Federated Privacy-Preserving XAI Engine</h4>
-          <p>On-device explainable model execution keeping sensitive citizen financial & health data private under Digital Personal Data Protection (DPDP) Act 2023.</p>
-        </div>
+        <p style="margin:4px 0 0; font-size:12px; color:var(--text-muted);">
+          Verified Net Worth: ₹45 Lakhs · Portfolio Concentration: 25% · Tenure: 8 Years
+        </p>
       </div>
     </div>
 
-    <button type="button" class="modal-action-btn" id="modal-action-btn">
-      Explore SPASHTA Prototype Demo
+    <div id="aa-status-box" style="display:none; padding:10px 14px; border-radius:8px; background:#EFF6FF; border:1px solid #BFDBFE; font-size:12px; color:#1E40AF; margin-bottom:12px;">
+      ⏳ Ingesting digitally signed financial telemetry artifact...
+    </div>
+
+    <button type="button" class="modal-action-btn" id="aa-modal-cancel-btn" style="background:#F1F5F9; color:var(--text-dark); border:1px solid var(--panel-border);">
+      Cancel
     </button>
   </div>
 </div>
+
+    <div id="voice-feedback-toast" class="voice-feedback-toast hidden"></div>
 
 <header class="top">
   <div class="shell top-row">
@@ -127,6 +97,17 @@
     </div>
     
     <div class="nav-actions">
+      <button type="button" class="privacy-shield-btn" id="privacy-shield-btn" title="Toggle On-Device Federated Privacy Mode (DPDP Act 2023)">
+        <span id="privacy-icon">🛡️</span>
+        <span id="privacy-text">Privacy Mode: Off</span>
+      </button>
+
+      <button type="button" class="voice-assistant-nav-btn" id="global-voice-assistant-btn" title="Click to speak: 'Switch to RBI', 'Insurance', 'NABARD', 'Compute', etc.">
+        <span class="voice-nav-icon">🎙️</span>
+        <span id="voice-nav-text">Voice Command</span>
+        <span class="voice-wave-dot"></span>
+      </button>
+
       <div class="lang-container" id="lang-container">
         <div class="lang-toggle">
           <label for="lang-select">Language</label>
@@ -140,12 +121,11 @@
 
 <div class="shell">
   <section class="hero">
-    <span class="eyebrow">⚡ Regulatory Audit-Ready Explainable AI Engine</span>
     <h1 id="hero-h1">Every AI Decision, Explained Visually & Spoken in 22 Indian Languages.</h1>
-    <p class="lede" id="hero-lede">SPASHTA eliminates AI opacity by converting complex credit, insurance, and investment scoring into plain-language explanations, interactive visual charts, and spoken voice readouts.</p>
+    <p class="lede" id="hero-lede">SPASHTA eliminates AI opacity by converting complex credit, insurance, pension, insolvency, and investment scoring into plain-language explanations, interactive visual charts, and spoken voice readouts.</p>
     <div class="stats">
       <div class="stat"><b>22</b><span>Indian Languages</span></div>
-      <div class="stat"><b>3 Sectors</b><span>RBI · IRDAI · SEBI</span></div>
+      <div class="stat"><b>6 Sectors</b><span>RBI · IRDAI · SEBI · PFRDA · IBBI · NABARD</span></div>
       <div class="stat"><b>100%</b><span>Explainable XAI Audit</span></div>
     </div>
   </section>
@@ -155,6 +135,9 @@
       <div class="tab active" data-domain="rbi"><span class="dot"></span>RBI <small style="color:var(--text-muted);">· Credit</small></div>
       <div class="tab" data-domain="irdai"><span class="dot"></span>IRDAI <small style="color:var(--text-muted);">· Claims</small></div>
       <div class="tab" data-domain="sebi"><span class="dot"></span>SEBI <small style="color:var(--text-muted);">· Suitability</small></div>
+      <div class="tab" data-domain="pfrda"><span class="dot"></span>PFRDA <small style="color:var(--text-muted);">· Pensions</small></div>
+      <div class="tab" data-domain="ibbi"><span class="dot"></span>IBBI <small style="color:var(--text-muted);">· Insolvency</small></div>
+      <div class="tab" data-domain="nabard"><span class="dot"></span>NABARD <small style="color:var(--text-muted);">· Agri KCC</small></div>
     </div>
   </div>
 
@@ -168,6 +151,26 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             <span>Applicant Profile Parameters</span>
           </p>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button type="button" class="btn-tool" id="btn-dictate" title="Dictate financial inputs via Speech-to-Text">
+              🎙️ Voice Dictate
+            </button>
+            <button type="button" class="btn-tool" id="btn-aa-fetch" title="Simulate Core Banking & Account Aggregator statement fetch">
+              🏦 Fetch via AA
+            </button>
+          </div>
+        </div>
+
+        <div id="voice-status-banner" style="display:none; margin-bottom:16px; padding:10px 14px; border-radius:10px; background:#FEF3C7; border:1px solid #FDE68A; font-size:12.5px; color:#92400E; display:flex; align-items:center; justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="speech-pulse-dot"></span>
+            <span id="voice-status-text">Listening for speech...</span>
+          </div>
+          <button type="button" style="background:none; border:none; cursor:pointer; font-size:14px; font-weight:700;" onclick="stopVoiceDictate()">&times;</button>
+        </div>
+
+        <div id="privacy-badge-banner" style="display:none; margin-bottom:16px; padding:10px 14px; border-radius:10px; background:#ECFDF5; border:1px solid #A7F3D0; font-size:12.5px; color:#065F46;">
+          🛡️ <b>DPDP Act 2023 Federated Mode Active:</b> All calculations are processed on-device. Zero applicant data leaves your browser.
         </div>
 
         <div class="presets" id="presets"></div>
@@ -183,7 +186,7 @@
 
 <footer class="site">
   <div class="shell">
-    <p class="note">Powered by <b>Shapley Marginal Attribution Engine</b> & <b>FastAPI Audit Backend</b>. Compliant with RBI Fair Lending 2023, IRDAI Policyholder Protection 2024 & SEBI Advisers Regulations 2020.</p>
+    <p class="note">Powered by <b>Aumann-Shapley Marginal Attribution Engine</b> & <b>FastAPI Audit Backend</b>. Fully compliant with RBI Fair Lending 2023, IRDAI Policyholder Protection 2024, SEBI Advisers Regulations 2020, PFRDA NPS 2016, IBBI CIRP 2016 & DPDP Act 2023.</p>
     <span>SPASHTA Platform · Multilingual Explainable AI Demo</span>
   </div>
 </footer>

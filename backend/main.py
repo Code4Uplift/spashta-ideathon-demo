@@ -31,7 +31,9 @@ try:
         TranslateRequest,
         TranslateResponse,
         CertificateCreateRequest,
-        CertificatePublic
+        CertificatePublic,
+        AccountAggregatorWebhookPayload,
+        AccountAggregatorResponse
     )
     from backend.shapley_engine import DOMAINS, score_domain_inputs, compute_cert_hash
     from backend.auth import require_api_key
@@ -44,7 +46,9 @@ except ImportError:
         TranslateRequest,
         TranslateResponse,
         CertificateCreateRequest,
-        CertificatePublic
+        CertificatePublic,
+        AccountAggregatorWebhookPayload,
+        AccountAggregatorResponse
     )
     from shapley_engine import DOMAINS, score_domain_inputs, compute_cert_hash
     from auth import require_api_key
@@ -65,8 +69,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="SPASHTA (स्पष्ट) Backend API",
-    description="Multilingual Explainable AI API for Regulated Indian Financial Sectors (RBI, IRDAI, SEBI)",
-    version="2.0.0",
+    description="Multilingual Explainable AI API for 6 Regulated Indian Financial Sectors (RBI, IRDAI, SEBI, PFRDA, IBBI, NABARD)",
+    version="2.5.0",
     lifespan=lifespan
 )
 
@@ -80,7 +84,9 @@ default_origins = [
     "http://127.0.0.1:8080",
     "http://localhost:5500",
     "http://127.0.0.1:5500",
-    "https://spashta.vercel.app"
+    "https://spashta.vercel.app",
+    "https://spashta-seven.vercel.app",
+    "https://spashta-ideathon-demo.vercel.app"
 ]
 
 env_origins = os.getenv("ALLOWED_ORIGINS", "")
@@ -93,6 +99,7 @@ else:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
+    allow_origin_regex=r"https:\/\/.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -100,6 +107,21 @@ app.add_middleware(
 
 # In-memory translation cache (thread-safe in GIL / async single loop)
 _translation_cache: Dict[str, str] = {}
+
+
+@app.get("/", tags=["Root"])
+def root():
+    """
+    Root endpoint returning service identity and quick links to /docs and /health.
+    """
+    return {
+        "status": "ok",
+        "service": "SPASHTA (स्पष्ट) Explainable AI Backend API",
+        "version": "2.5.0",
+        "docs": "/docs",
+        "health": "/health",
+        "sectors": ["RBI", "IRDAI", "SEBI", "PFRDA", "IBBI", "NABARD"]
+    }
 
 
 @app.get("/health", tags=["Health"])
@@ -118,7 +140,8 @@ def health_check(db: Session = Depends(get_db)):
     return {
         "status": "ok",
         "service": "SPASHTA XAI Backend",
-        "version": "2.0.0",
+        "version": "2.5.0",
+        "sectors": ["RBI", "IRDAI", "SEBI", "PFRDA", "IBBI", "NABARD"],
         "database": db_status,
         "timestamp": datetime.now(timezone.utc).isoformat()
     }
@@ -128,7 +151,7 @@ def health_check(db: Session = Depends(get_db)):
 def compute_score(request: ScoreRequest):
     """
     Protected endpoint: Computes exact continuous Aumann-Shapley marginal attributions
-    for applicant parameters across RBI, IRDAI, or SEBI frameworks.
+    for applicant parameters across RBI, IRDAI, SEBI, PFRDA, IBBI, or NABARD frameworks.
     Guarantees efficiency axiom: sum(phi_i) == P(outcome) - P(baseline).
     """
     result = score_domain_inputs(request.domain, request.inputs)
@@ -266,7 +289,7 @@ def verify_certificate(cert_id: str, db: Session = Depends(get_db)):
     Public verification endpoint: Allows regulators, applicants, and auditors to verify
     the authentic existence and SHA-256 integrity of an issued compliance certificate.
     Returns scoped public fields only (cert_id, domain, verdict, sha256_hash, created_at).
-    Does NOT leak private applicant inputs or proprietary model parameters.
+    Does NOT leak private applicant inputs or proprietary model parameters under DPDP Act 2023.
     """
     try:
         record = db.query(CertificateRecord).filter(CertificateRecord.cert_id == cert_id).first()
@@ -278,4 +301,35 @@ def verify_certificate(cert_id: str, db: Session = Depends(get_db)):
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Certificate '{cert_id}' not found in audit registry"
+    )
+
+
+@app.post("/webhook/account-aggregator", response_model=AccountAggregatorResponse, tags=["Core Banking (CBS) & AA Webhook"])
+def account_aggregator_webhook(payload: AccountAggregatorWebhookPayload):
+    """
+    Core Banking (CBS) & Account Aggregator (AA) Webhook Receiver.
+    Simulates automated ingestion of verified banking statement artifacts (e.g. from Finacle / TCS BaNCS / Sahamati AA).
+    Extracts underwriting financial parameters and returns instant explainable attribution scores.
+    """
+    domain = payload.domain
+    domain_cfg = DOMAINS[domain]
+    fin = payload.financial_data
+
+    # Map incoming CBS/AA financial data to domain fields
+    extracted_inputs = {}
+    for f in domain_cfg["fields"]:
+        key = f["key"]
+        if key in fin:
+            extracted_inputs[key] = float(fin[key])
+        else:
+            extracted_inputs[key] = float(f["base"])
+
+    score_result = score_domain_inputs(domain, extracted_inputs)
+
+    return AccountAggregatorResponse(
+        status="PROCESSED_SUCCESSFULLY",
+        consent_handle=payload.consent_handle,
+        extracted_parameters=extracted_inputs,
+        score_result=ScoreResponse(**score_result),
+        verified_at=datetime.now(timezone.utc)
     )
