@@ -67,11 +67,10 @@ Where:
 
 ## 🌟 Key Features & Capabilities
 
-- **Multilingual Voice-to-Text (STT)**: Direct voice parameter dictation in English and regional Indian languages using browser speech recognition.
-- **Smart Voice Navigation Assistant**: Hands-free voice assistant listening to user intent and switching across the 6 regulatory sectors (RBI, IRDAI, SEBI, PFRDA, IBBI, NABARD).
+- **Smart Multilingual Voice Assistant (STT)**: Unified hands-free voice command system supporting compound natural speech (e.g. *"I want to check SEBI, I have 5 lakh rupees income"*, *"पॉलिसी विंटेज 5 साल"*, *"जमीन 10 एकर"*, *"CIBIL 780"*) across English, Hindi, Marathi, and 22 Indian languages.
+- **Instant Sector Switching & Parameter Dictation**: Automatically switches active authority (RBI, IRDAI, SEBI, PFRDA, IBBI, NABARD) and updates sliders in real time with live streaming speech feedback.
 - **QR-Verified PDF Compliance Certificates**: Scannable, tamper-evident cryptographic certificates with dynamic QR deep-links (`?verify=<cert_id>`) ensuring **zero PII leakage** under India's DPDP Act 2023.
 - **Indic Regional Voice Synthesis (TTS)**: Dynamic regional voice playback with Play, Pause, Resume, and Stop controls across Eighth Schedule Indian languages.
-- **Account Aggregator & Core Banking Ingestion**: Simulated Sahamati / Setu 1-click verified financial statement fetch with live backend webhook (`POST /webhook/account-aggregator`).
 - **6-Agency Regulatory Domain Expansion**: Full mathematical models for RBI, IRDAI, SEBI, PFRDA, IBBI, and NABARD.
 - **DPDP 2023 Federated Privacy Mode**: Zero-server transmission client-side sandbox toggle computing Shapley values locally on-device for maximum data privacy.
 

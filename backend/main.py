@@ -195,39 +195,50 @@ async def translate_text(request: TranslateRequest):
             cached=True
         )
 
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        "Accept": "*/*",
+        "Accept-Language": "en-US,en;q=0.9",
+    }
+
     translated_result = clean_text
 
-    # 1. Primary: Google GTX endpoint
+    # 1. Primary: Google GTX with browser headers
     try:
         encoded_query = urllib.parse.quote(clean_text)
         url = f"https://translate.googleapis.com/translate_a/single?client=gtx&sl={source_lang}&tl={target_lang}&dt=t&q={encoded_query}"
-        async with httpx.AsyncClient(timeout=8.0) as client:
+        async with httpx.AsyncClient(timeout=6.0, headers=headers) as client:
             resp = await client.get(url)
             if resp.status_code == 200:
                 data = resp.json()
                 if data and isinstance(data, list) and len(data) > 0 and data[0]:
                     chunks = [item[0] for item in data[0] if item and item[0]]
                     if chunks:
-                        translated_result = "".join(chunks)
+                        cand = "".join(chunks).strip()
+                        if cand and cand != clean_text:
+                            translated_result = cand
     except Exception:
         pass
 
-    # 2. Fallback: MyMemory API if Google failed
+    # 2. Fallback: MyMemory API with verified email parameter
     if translated_result == clean_text and target_lang != "en":
         try:
             encoded_query = urllib.parse.quote(clean_text)
-            url2 = f"https://api.mymemory.translated.net/get?q={encoded_query}&langpair={source_lang}|{target_lang}"
-            async with httpx.AsyncClient(timeout=6.0) as client:
+            url2 = f"https://api.mymemory.translated.net/get?q={encoded_query}&langpair={source_lang}|{target_lang}&de=spashta.audit.ai@gmail.com"
+            async with httpx.AsyncClient(timeout=5.0, headers=headers) as client:
                 resp2 = await client.get(url2)
                 if resp2.status_code == 200:
                     data2 = resp2.json()
-                    mem_trans = data2.get("responseData", {}).get("translatedText")
-                    if mem_trans and mem_trans != clean_text:
+                    mem_trans = data2.get("responseData", {}).get("translatedText", "").strip()
+                    if mem_trans and not mem_trans.upper().startswith("MYMEMORY WARNING") and mem_trans != clean_text:
                         translated_result = mem_trans
         except Exception:
             pass
 
-    _translation_cache[cache_key] = translated_result
+    # Only cache successful translations
+    if translated_result != clean_text:
+        _translation_cache[cache_key] = translated_result
+
     return TranslateResponse(
         translated_text=translated_result,
         source_lang=source_lang,

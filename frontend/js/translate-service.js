@@ -17,8 +17,40 @@ const STATIC_TRANSLATIONS = {
     'Compute Explanations': 'स्पष्टीकरण निकालें',
     'Generate Audit Certificate': 'ऑडिट प्रमाणपत्र बनाएं',
     'Reset Defaults': 'डिफ़ॉल्ट रीसेट करें',
-    'Fetch via Account Aggregator': 'अकाउंट एग्रीगेटर से प्राप्त करें',
-    'Voice Command': 'वॉइस कमांड'
+    'Voice Dictate': 'वॉइस डिक्टेट',
+    'CIBIL / Credit Score': 'सिबिल / क्रेडिट स्कोर',
+    'Requested Loan Amount (₹)': 'अनुरोधित ऋण राशि (₹)',
+    'Monthly Income (₹)': 'मासिक आय (₹)',
+    'Existing Obligation (FOIR %)': 'वर्तमान देनदारी (FOIR %)',
+    'Past 90-Day DPD (Delinquency)': 'पिछले 90 दिनों की देरी (Delinquency)',
+    'Employment Type': 'रोजगार का प्रकार',
+    'Policy Vintage (Years)': 'पॉलिसी विंटेज (वर्ष)',
+    'Claim Amount (₹)': 'दावा राशि (₹)',
+    'Network Hospital / Garage': 'नेटवर्क अस्पताल / गैरेज',
+    'Pre-existing Disease Declared': 'पूर्व-विद्यमान बीमारी घोषित',
+    'Anomaly / Risk Index (%)': 'विसंगति / जोखिम सूचकांक (%)',
+    'Investor Risk Tolerance (1-100)': 'निवेशक जोखिम सहनशीलता (1-100)',
+    'Annual Net Worth / Income (₹)': 'वार्षिक कुल संपत्ति / आय (₹)',
+    'Portfolio Concentration (%)': 'पोर्टफोलियो एकाग्रता (%)',
+    'Investment Horizon (Years)': 'निवेश अवधि (वर्ष)',
+    'Product Risk Meter Level': 'उत्पाद जोखिम स्तर',
+    'Current Investor Age (Years)': 'वर्तमान निवेशक आयु (वर्ष)',
+    'Monthly NPS Contribution (₹)': 'मासिक एनपीएस अंशदान (₹)',
+    'Active Equity Allocation (E-Class %)': 'इक्विटी आवंटन (ई-क्लास %)',
+    'Desired Monthly Pension Target (₹)': 'वांछित मासिक पेंशन लक्ष्य (₹)',
+    'Retirement Corpus Adequacy Score': 'सेवानिवृत्ति निधि पर्याप्तता स्कोर',
+    'Resolution Enterprise Value (₹ Cr)': 'समाधान उद्यम मूल्य (₹ करोड़)',
+    'Liquidation Value Coverage (%)': 'परिसमापन मूल्य कवरेज (%)',
+    'Implementation Horizon (Months)': 'कार्यान्वयन अवधि (महीने)',
+    'Operational Creditor Recovery (%)': 'परिचालन लेनदार वसूली (%)',
+    'Applicant Governance / Track Record': 'आवेदक ट्रैक रिकॉर्ड व शासन',
+    'Cultivable Land Holding (Acres)': 'कृषि योग्य भूमि (एकड़)',
+    'Annual Harvest Market Value (₹)': 'वार्षिक फसल बाजार मूल्य (₹)',
+    'Informal Moneylender Debt Share (%)': 'अनौपचारिक साहूकार ऋण हिस्सा (%)',
+    'Perennial Irrigation Source Access': 'बारहमासी सिंचाई स्रोत सुविधा',
+    'PM-Fasal Bima Yojana (PMFBY) Insured': 'प्रधानमंत्री फसल बीमा योजना बीमित',
+    'Official XAI Compliance Audit Certificate': 'आधिकारिक एक्सएआई अनुपालन ऑडिट प्रमाणपत्र',
+    'Every AI Decision, Explained Visually & Spoken in 22 Indian Languages.': 'प्रत्येक एआई निर्णय, 22 भारतीय भाषाओं में दृश्य रूप से समझाया और बोला गया।'
   },
   mr: {
     'CREDIT APPROVED': 'कर्ज मंजूर (Approved)',
@@ -36,8 +68,40 @@ const STATIC_TRANSLATIONS = {
     'Compute Explanations': 'स्पष्टीकरणे काढा',
     'Generate Audit Certificate': 'ऑडिट प्रमाणपत्र तयार करा',
     'Reset Defaults': 'डीफॉल्ट रीसेट करा',
-    'Fetch via Account Aggregator': 'अकाउंट अ‍ॅग्रीगेटरवरून आणा',
-    'Voice Command': 'व्हॉइस कमांड'
+    'Voice Dictate': 'व्हॉइस डिक्टेट',
+    'CIBIL / Credit Score': 'सिबिल / क्रेडिट स्कोअर',
+    'Requested Loan Amount (₹)': 'मागणी केलेली कर्जाची रक्कम (₹)',
+    'Monthly Income (₹)': 'मासिक उत्पन्न (₹)',
+    'Existing Obligation (FOIR %)': 'सध्याची देणी (FOIR %)',
+    'Past 90-Day DPD (Delinquency)': 'मागील 90 दिवसांचा थकीत इतिहास',
+    'Employment Type': 'रोजगाराचा प्रकार',
+    'Policy Vintage (Years)': 'पॉलिसी विंटेज (वर्षे)',
+    'Claim Amount (₹)': 'दाव्याची रक्कम (₹)',
+    'Network Hospital / Garage': 'नेटवर्क रुग्णालय / गॅरेज',
+    'Pre-existing Disease Declared': 'पूर्वीचा आजार जाहीर केला आहे का',
+    'Anomaly / Risk Index (%)': 'अनियमितता / जोखीम निर्देशांक (%)',
+    'Investor Risk Tolerance (1-100)': 'गुंतवणूकदार जोखीम क्षमता (1-100)',
+    'Annual Net Worth / Income (₹)': 'वार्षिक निव्वळ संपत्ती / उत्पन्न (₹)',
+    'Portfolio Concentration (%)': 'पोर्टफोलिओ एकाग्रता (%)',
+    'Investment Horizon (Years)': 'गुंतवणूक कालावधी (वर्षे)',
+    'Product Risk Meter Level': 'उत्पादन जोखीम पातळी',
+    'Current Investor Age (Years)': 'गुंतवणूकदाराचे सध्याचे वय (वर्षे)',
+    'Monthly NPS Contribution (₹)': 'मासिक एनपीएस योगदान (₹)',
+    'Active Equity Allocation (E-Class %)': 'इक्विटी वाटप (ई-वर्ग %)',
+    'Desired Monthly Pension Target (₹)': 'अपेक्षित मासिक पेन्शन ध्येय (₹)',
+    'Retirement Corpus Adequacy Score': 'निवृत्ती निधी पर्याप्तता स्कोअर',
+    'Resolution Enterprise Value (₹ Cr)': 'संकल्प एंटरप्राइझ मूल्य (₹ कोटी)',
+    'Liquidation Value Coverage (%)': 'परिसमापन मूल्य कव्हरेज (%)',
+    'Implementation Horizon (Months)': 'अंमलबजावणी कालावधी (महिने)',
+    'Operational Creditor Recovery (%)': 'ऑपरेशनल सावकार वसुली (%)',
+    'Applicant Governance / Track Record': 'अर्जदार ट्रॅक रेकॉर्ड आणि प्रशासन',
+    'Cultivable Land Holding (Acres)': 'लागवडीयोग्य शेतजमीन (एकर)',
+    'Annual Harvest Market Value (₹)': 'वार्षिक पीक बाजार मूल्य (₹)',
+    'Informal Moneylender Debt Share (%)': 'सावकारी कर्जाचा वाटा (%)',
+    'Perennial Irrigation Source Access': 'बारमाही जलसिंचन सुविधा',
+    'PM-Fasal Bima Yojana (PMFBY) Insured': 'पंतप्रधान पीक विमा योजना संरक्षित',
+    'Official XAI Compliance Audit Certificate': 'अधिकृत एक्सएआय अनुपालन ऑडिट प्रमाणपत्र',
+    'Every AI Decision, Explained Visually & Spoken in 22 Indian Languages.': 'प्रत्येक एआय निर्णय, 22 भारतीय भाषांमध्ये दृश्य स्वरूपात आणि आवाजात स्पष्ट केला जातो.'
   },
   bn: {
     'CREDIT APPROVED': 'ঋণ অনুমোদিত (Approved)',
@@ -55,7 +119,13 @@ const STATIC_TRANSLATIONS = {
     'Compute Explanations': 'ব্যাখ্যা গণনা করুন',
     'Generate Audit Certificate': 'অডিট সার্টিফিকেট তৈরি করুন',
     'Reset Defaults': 'রিসেট করুন',
-    'Voice Command': 'ভয়েস কমান্ড'
+    'Voice Dictate': 'ভয়েস ডিক্টেট',
+    'CIBIL / Credit Score': 'সিিবল / ক্রেডিট স্কোর',
+    'Requested Loan Amount (₹)': 'অনুরোধ করা ঋণের পরিমাণ (₹)',
+    'Monthly Income (₹)': 'মাসিক আয় (₹)',
+    'Policy Vintage (Years)': 'পলিসি ভিন্টেজ (বছর)',
+    'Claim Amount (₹)': 'দাবির পরিমাণ (₹)',
+    'Cultivable Land Holding (Acres)': 'চাষযোগ্য জমির পরিমাণ (একর)'
   },
   ta: {
     'CREDIT APPROVED': 'கடன் அங்கீகரிக்கப்பட்டது (Approved)',
@@ -73,7 +143,13 @@ const STATIC_TRANSLATIONS = {
     'Compute Explanations': 'விளக்கங்களைக் கணக்கிடு',
     'Generate Audit Certificate': 'தணிக்கை சான்றிதழ் உருவாக்கு',
     'Reset Defaults': 'மீட்டமைக்க',
-    'Voice Command': 'குரல் கட்டளை'
+    'Voice Dictate': 'குரல் உள்ளீடு',
+    'CIBIL / Credit Score': 'சிபில் / கிரெடிட் ஸ்கோர்',
+    'Requested Loan Amount (₹)': 'கோரப்பட்ட கடன் தொகை (₹)',
+    'Monthly Income (₹)': 'மாத வருமானம் (₹)',
+    'Policy Vintage (Years)': 'பாலிசி காலம் (ஆண்டுகள்)',
+    'Claim Amount (₹)': 'கோரிக்கை தொகை (₹)',
+    'Cultivable Land Holding (Acres)': 'சாகுபடி நிலம் (ஏக்கர்)'
   },
   te: {
     'CREDIT APPROVED': 'రుణం ఆమోదించబడింది (Approved)',
@@ -91,7 +167,13 @@ const STATIC_TRANSLATIONS = {
     'Compute Explanations': 'వివరణలను లెక్కించండి',
     'Generate Audit Certificate': 'ఆడిట్ సర్టిఫికెట్ రూపొందించండి',
     'Reset Defaults': 'రీసెట్ చేయండి',
-    'Voice Command': 'వాయిస్ కమాండ్'
+    'Voice Dictate': 'వాయిస్ డిక్టేట్',
+    'CIBIL / Credit Score': 'సిబిల్ / క్రెడిట్ స్కోరు',
+    'Requested Loan Amount (₹)': 'కోరిన రుణం మొత్తం (₹)',
+    'Monthly Income (₹)': 'నెలవారీ ఆదాయం (₹)',
+    'Policy Vintage (Years)': 'పాలసీ కాలపరిమితి (సంవత్సరాలు)',
+    'Claim Amount (₹)': 'క్లెయిమ్ మొత్తం (₹)',
+    'Cultivable Land Holding (Acres)': 'సాగు భూమి (ఎకరాలు)'
   },
   gu: {
     'CREDIT APPROVED': 'લોન મંજૂર (Approved)',
@@ -109,7 +191,12 @@ const STATIC_TRANSLATIONS = {
     'Compute Explanations': 'સમજૂતી ગણો',
     'Generate Audit Certificate': 'ઓડિટ પ્રમાણપત્ર બનાવો',
     'Reset Defaults': 'રીસેટ કરો',
-    'Voice Command': 'વોઇસ કમાન્ડ'
+    'Voice Dictate': 'વોઇસ ડિક્ટેટ',
+    'CIBIL / Credit Score': 'સિબિલ / ક્રેડિટ સ્કોર',
+    'Requested Loan Amount (₹)': 'માંગેલ લોન રકમ (₹)',
+    'Monthly Income (₹)': 'માસિક આવક (₹)',
+    'Policy Vintage (Years)': 'પોલિસી વિન્ટેજ (વર્ષ)',
+    'Claim Amount (₹)': 'દાવાની રકમ (₹)'
   }
 };
 
@@ -182,7 +269,47 @@ class InstantTranslateService {
     const clean = textChunk.trim();
     if (!clean) return textChunk;
 
-    // 1. Primary: Server-side FastAPI Translation Proxy
+    // 1. Direct Pre-compiled Instant Dictionary (0ms latency, zero network)
+    if (STATIC_TRANSLATIONS && STATIC_TRANSLATIONS[targetLang] && STATIC_TRANSLATIONS[targetLang][clean]) {
+      return STATIC_TRANSLATIONS[targetLang][clean];
+    }
+
+    // 2. Direct browser Google GTX fetch (fast, client residential IP, no datacenter 429)
+    try {
+      const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(clean)}`;
+      const response = await fetch(url);
+      if (response.ok) {
+        const text = await response.text();
+        if (text.startsWith('[')) {
+          const data = JSON.parse(text);
+          if (data && data[0]) {
+            const translated = data[0].map(item => item[0]).filter(Boolean).join('').trim();
+            if (translated && (sourceLang === targetLang || translated !== clean)) {
+              return translated;
+            }
+          }
+        }
+      }
+    } catch (e) {
+      // Browser GTX fallback
+    }
+
+    // 3. MyMemory API with verified email parameter
+    try {
+      const url2 = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(clean)}&langpair=${sourceLang}|${targetLang}&de=spashta.audit.ai@gmail.com`;
+      const response2 = await fetch(url2);
+      if (response2.ok) {
+        const data2 = await response2.json();
+        const translated2 = data2?.responseData?.translatedText?.trim();
+        if (translated2 && !translated2.toUpperCase().startsWith('MYMEMORY WARNING') && translated2 !== clean) {
+          return translated2;
+        }
+      }
+    } catch (e2) {
+      // MyMemory fallback
+    }
+
+    // 4. Server-side FastAPI Translation Proxy
     try {
       const resp = await fetch(`${SPASHTA_API_URL}/translate`, {
         method: 'POST',
@@ -196,43 +323,14 @@ class InstantTranslateService {
       if (resp.ok) {
         const data = await resp.json();
         if (data && data.translated_text) {
-          return data.translated_text;
-        }
-      }
-    } catch (apiErr) {
-      console.warn('FastAPI translate proxy unreachable, falling back to direct browser translation:', apiErr);
-    }
-
-    // 2. Client-side Fallback: Google GTX Single API
-    try {
-      const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(clean)}`;
-      const response = await fetch(url);
-      if (response.ok) {
-        const data = await response.json();
-        if (data && data[0]) {
-          const translated = data[0].map(item => item[0]).filter(Boolean).join('');
-          if (translated) {
-            return translated;
+          const res = data.translated_text.trim();
+          if (res && (sourceLang === targetLang || res !== clean)) {
+            return res;
           }
         }
       }
-    } catch (e) {
-      console.warn('Google Translate Single API error, trying MyMemory fallback:', e);
-    }
-
-    // 3. Fallback: MyMemory API
-    try {
-      const url2 = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(clean)}&langpair=${sourceLang}|${targetLang}`;
-      const response2 = await fetch(url2);
-      if (response2.ok) {
-        const data2 = await response2.json();
-        const translated2 = data2?.responseData?.translatedText;
-        if (translated2 && translated2 !== clean) {
-          return translated2;
-        }
-      }
-    } catch (e2) {
-      console.warn('MyMemory API error:', e2);
+    } catch (apiErr) {
+      // Proxy unreachable
     }
 
     return textChunk;

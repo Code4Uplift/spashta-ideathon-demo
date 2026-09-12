@@ -30,61 +30,7 @@
   </div>
 </div>
 
-<div class="modal-overlay hidden" id="aa-modal">
-  <div class="lang-modal-card" style="max-width: 560px;">
-    <button type="button" class="modal-close-btn" id="aa-modal-close-btn">&times;</button>
-    <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-      <span style="font-size:24px;">🏦</span>
-      <div>
-        <h3 style="margin:0; font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; color:var(--primary-navy);">Account Aggregator (AA) Gateway</h3>
-        <span style="font-size:11px; color:var(--text-muted); font-weight:600;">Direct CBS Connectors (Finacle / BaNCS / Sahamati AA)</span>
-      </div>
-    </div>
-    <p style="font-size:13px; color:var(--text-dark); line-height:1.5; margin:0 0 16px;">
-      Select a verified financial profile to simulate automated, zero-manual-entry statement ingestion directly into SPASHTA's explainable underwriting engine:
-    </p>
 
-    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
-      <div class="aa-profile-card" data-profile="rbi-hdfc">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <b>💳 HDFC Bank Corporate Salaried Account</b>
-          <span class="badge-verified">✓ AA Signed</span>
-        </div>
-        <p style="margin:4px 0 0; font-size:12px; color:var(--text-muted);">
-          Verified Income: ₹1,20,000/mo · Avg Balance: ₹85,000 · Debt FOIR: 25% · CIBIL: 790 (Prime)
-        </p>
-      </div>
-
-      <div class="aa-profile-card" data-profile="nabard-kcc">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <b>🌾 SBI Kisan Credit Card / Agri Account</b>
-          <span class="badge-verified">✓ AA Signed</span>
-        </div>
-        <p style="margin:4px 0 0; font-size:12px; color:var(--text-muted);">
-          Verified Land: 7.5 Acres · Annual Yield: ₹6,50,000 · PMFBY Insured · Perennial Borewell
-        </p>
-      </div>
-
-      <div class="aa-profile-card" data-profile="sebi-axis">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <b>📈 Axis Bank Wealth Priority Account</b>
-          <span class="badge-verified">✓ AA Signed</span>
-        </div>
-        <p style="margin:4px 0 0; font-size:12px; color:var(--text-muted);">
-          Verified Net Worth: ₹45 Lakhs · Portfolio Concentration: 25% · Tenure: 8 Years
-        </p>
-      </div>
-    </div>
-
-    <div id="aa-status-box" style="display:none; padding:10px 14px; border-radius:8px; background:#EFF6FF; border:1px solid #BFDBFE; font-size:12px; color:#1E40AF; margin-bottom:12px;">
-      ⏳ Ingesting digitally signed financial telemetry artifact...
-    </div>
-
-    <button type="button" class="modal-action-btn" id="aa-modal-cancel-btn" style="background:#F1F5F9; color:var(--text-dark); border:1px solid var(--panel-border);">
-      Cancel
-    </button>
-  </div>
-</div>
 
     <div id="voice-feedback-toast" class="voice-feedback-toast hidden"></div>
 
@@ -102,11 +48,6 @@
         <span id="privacy-text">Privacy Mode: Off</span>
       </button>
 
-      <button type="button" class="voice-assistant-nav-btn" id="global-voice-assistant-btn" title="Click to speak: 'Switch to RBI', 'Insurance', 'NABARD', 'Compute', etc.">
-        <span class="voice-nav-icon">🎙️</span>
-        <span id="voice-nav-text">Voice Command</span>
-        <span class="voice-wave-dot"></span>
-      </button>
 
       <div class="lang-container" id="lang-container">
         <div class="lang-toggle">
@@ -152,21 +93,25 @@
             <span>Applicant Profile Parameters</span>
           </p>
           <div style="display:flex; gap:8px; align-items:center;">
-            <button type="button" class="btn-tool" id="btn-dictate" title="Dictate financial inputs via Speech-to-Text">
-              🎙️ Voice Dictate
-            </button>
-            <button type="button" class="btn-tool" id="btn-aa-fetch" title="Simulate Core Banking & Account Aggregator statement fetch">
-              🏦 Fetch via AA
+            <button type="button" class="btn-dictate-pulse" id="btn-dictate" title="Speak naturally in any of 22 Indian languages: e.g. 'I want to check SEBI, I have 5 lakh rupees income' or 'Policy vintage 5 years'">
+              <span class="dictate-mic-icon">🎙️</span>
+              <span id="btn-dictate-text">Voice Dictate</span>
+              <span class="dictate-live-bars"><span></span><span></span><span></span></span>
             </button>
           </div>
         </div>
 
-        <div id="voice-status-banner" style="display:none; margin-bottom:16px; padding:10px 14px; border-radius:10px; background:#FEF3C7; border:1px solid #FDE68A; font-size:12.5px; color:#92400E; display:flex; align-items:center; justify-content:space-between;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span class="speech-pulse-dot"></span>
-            <span id="voice-status-text">Listening for speech...</span>
+        <div id="voice-status-banner" class="voice-status-card" style="display:none;">
+          <div class="voice-status-content">
+            <div class="voice-status-indicator">
+              <span class="speech-live-dot"></span>
+              <span class="voice-status-badge">LIVE VOICE</span>
+            </div>
+            <div class="voice-status-text-wrap">
+              <span id="voice-status-text" class="voice-status-stream">Listening...</span>
+            </div>
           </div>
-          <button type="button" style="background:none; border:none; cursor:pointer; font-size:14px; font-weight:700;" onclick="stopVoiceDictate()">&times;</button>
+          <button type="button" class="voice-status-close" onclick="stopVoiceDictate()" title="Stop Voice">&times;</button>
         </div>
 
         <div id="privacy-badge-banner" style="display:none; margin-bottom:16px; padding:10px 14px; border-radius:10px; background:#ECFDF5; border:1px solid #A7F3D0; font-size:12.5px; color:#065F46;">
