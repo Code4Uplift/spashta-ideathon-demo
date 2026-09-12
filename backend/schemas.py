@@ -151,3 +151,17 @@ class AccountAggregatorResponse(BaseModel):
     extracted_parameters: Dict[str, float]
     score_result: ScoreResponse
     verified_at: datetime
+
+
+class VoiceIntentRequest(BaseModel):
+    text: str
+    current_domain: str = "rbi"
+    language: str = "en"
+
+
+class VoiceIntentResponse(BaseModel):
+    domain: Optional[str] = None
+    action: Optional[str] = None
+    parameters: Dict[str, float] = Field(default_factory=dict)
+    feedback: str
+    engine: str = "tcet_coe_qwen3.6"

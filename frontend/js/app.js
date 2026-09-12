@@ -250,7 +250,7 @@ function initSpeechRecognition() {
     if (event.results[0].isFinal || final) {
       const fullUtterance = (final || currentText).trim();
       if (fullUtterance) {
-        parseAndApplySpokenInput(fullUtterance);
+        processSpokenUtterance(fullUtterance);
       }
     }
   };
@@ -297,6 +297,120 @@ function stopVoiceDictate() {
 
 function triggerVoiceDictate() {
   startVoiceDictate();
+}
+
+let lastProcessedUtterance = '';
+let lastProcessedTime = 0;
+
+async function processSpokenUtterance(fullUtterance) {
+  const now = Date.now();
+  if (fullUtterance === lastProcessedUtterance && (now - lastProcessedTime) < 2500) {
+    return;
+  }
+  lastProcessedUtterance = fullUtterance;
+  lastProcessedTime = now;
+
+  const banner = document.getElementById('voice-status-banner');
+  const statusText = document.getElementById('voice-status-text');
+
+  if (statusText) {
+    statusText.textContent = `🧠 Parsing: "${fullUtterance}"...`;
+  }
+
+  const apiUrl = window.SPASHTA_API_URL || 'http://localhost:8000';
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 6000);
+
+    const response = await fetch(`${apiUrl}/voice-intent`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        text: fullUtterance,
+        current_domain: currentDomain,
+        language: currentLang || 'en'
+      }),
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId);
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Voice Intent API response:', data);
+      applyVoiceIntentResult(data, fullUtterance);
+      return;
+    }
+  } catch (err) {
+    console.warn('Voice-intent API call failed or timed out, falling back to local engine:', err);
+  }
+
+  // Graceful fallback to client-side heuristic engine
+  parseAndApplySpokenInput(fullUtterance);
+}
+
+function applyVoiceIntentResult(data, rawUtterance) {
+  const banner = document.getElementById('voice-status-banner');
+  const statusText = document.getElementById('voice-status-text');
+  const isCoE = data.engine === 'tcet_coe_qwen3.6';
+  const enginePrefix = isCoE ? '✨ [Qwen3.6 CoE AI] ' : '✓ ';
+
+  // 1. Action execution
+  if (data.action) {
+    if (data.action === 'compute') computeScore();
+    else if (data.action === 'reset') resetDomain();
+    else if (data.action === 'speak') triggerAudioPlayback();
+    else if (data.action === 'stop_audio') translateService.stopAudio();
+    else if (data.action === 'privacy') togglePrivacyShield();
+
+    if (banner) banner.classList.add('success-flash');
+    const msg = `${enginePrefix}${data.feedback || 'Action executed'}`;
+    if (statusText) statusText.textContent = msg;
+    showVoiceFeedbackToast(msg);
+    return;
+  }
+
+  // 2. Domain switch
+  let domainSwitched = false;
+  if (data.domain && data.domain !== currentDomain && DOMAINS[data.domain]) {
+    switchDomain(data.domain);
+    domainSwitched = true;
+  }
+
+  // 3. Parameters update
+  const targetDomain = data.domain || currentDomain;
+  const domainObj = DOMAINS[targetDomain];
+  let paramUpdated = false;
+
+  if (data.parameters && typeof data.parameters === 'object') {
+    for (const [k, v] of Object.entries(data.parameters)) {
+      if (typeof v === 'number' && !isNaN(v)) {
+        state[k] = v;
+        paramUpdated = true;
+      }
+    }
+  }
+
+  if (paramUpdated) {
+    buildFields();
+    renderCert();
+  }
+
+  if (domainSwitched || paramUpdated) {
+    if (banner) banner.classList.add('success-flash');
+    const msg = `${enginePrefix}${data.feedback || (domainSwitched ? `Switched to ${domainObj.name}` : 'Parameters updated')}`;
+    if (statusText) statusText.textContent = msg;
+    showVoiceFeedbackToast(msg);
+  } else {
+    // If CoE returned empty or didn't extract, try local parser fallback
+    const fallbackApplied = parseAndApplySpokenInput(rawUtterance);
+    if (!fallbackApplied && statusText) {
+      statusText.textContent = `🗣️ "${rawUtterance}"`;
+    }
+  }
 }
 
 // Spoken number words mapping across English, Hindi, Marathi & regional Indic words
